@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 3 Practice Test Checker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .container {
+            max-width: 900px;
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* --- Score Styling (User Request: Red, Bold, 32px) --- */
+        #score-display {
+            font-size: 32px;
+            font-weight: 900;
+            color: #dc2626; /* Red-700 */
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 0.75rem;
+            border: 4px solid #fecaca;
+            border-radius: 0.75rem;
+            background-color: #fef2f2;
+        }
+
+        .section-header {
+            background-color: #eff6ff; /* Light Blue */
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            color: #1e40af; /* Dark Blue */
+            margin-bottom: 1.5rem;
+            border-left: 5px solid #3b82f6;
+        }
+        
+        .input-group {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        
+        .question-label {
+            min-width: 50px;
+            font-weight: 700;
+        }
+
+        .input-field {
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            padding: 0.5rem 0.75rem;
+            margin-right: 1rem;
+            flex-grow: 1;
+            max-width: 250px; /* Constrain width for short answers */
+            font-weight: 500;
+        }
+        
+        /* --- Feedback Styling (User Request: Green Tick, Red Cross) --- */
+        .feedback {
+            margin-left: 0.5rem;
+            font-weight: bold;
+        }
+        .tick { color: #10b981; font-size: 1.5rem; margin-right: 0.25rem;} /* Green */
+        .cross { color: #ef4444; font-size: 1.5rem; margin-right: 0.25rem;} /* Red */
+        .correct-text {
+            color: #3b82f6; /* Blue to show correct answer */
+            font-size: 0.875rem;
+            font-style: italic;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body class="flex justify-center py-10">
+    <div class="container w-full">
+        <header class="text-center">
+            <h1 class="text-2xl font-extrabold text-gray-900 mb-2">Level 3 Practice Test</h1>
+            <p class="text-lg text-gray-600 mb-6">Enter your answers and submit to see your score and feedback.</p>
+            <!-- Score Display Section -->
+            <div id="score-display">0 / 25</div>
+        </header>
+
+        <form id="worksheet-form" class="text-gray-700">
+
+            <!-- Group 1: True / False (Q1-Q3) -->
+            <div class="section-header">Section A: True / False (T / F)</div>
+            <div id="section-tf" class="space-y-2">
+                <!-- Q1 -->
+                <div class="input-group">
+                    <span class="question-label">Q1.</span>
+                    <input type="text" id="q1" class="input-field tf-input" maxlength="5" data-answer="F" data-alt="FALSE" />
+                    <span id="f1" class="feedback"></span>
+                </div>
+                <!-- Q2 -->
+                <div class="input-group">
+                    <span class="question-label">Q2.</span>
+                    <input type="text" id="q2" class="input-field tf-input" maxlength="5" data-answer="T" data-alt="TRUE" />
+                    <span id="f2" class="feedback"></span>
+                </div>
+                <!-- Q3 -->
+                <div class="input-group">
+                    <span class="question-label">Q3.</span>
+                    <input type="text" id="q3" class="input-field tf-input" maxlength="5" data-answer="T" data-alt="TRUE" />
+                    <span id="f3" class="feedback"></span>
+                </div>
+            </div>
+
+            <!-- Group 2: Multiple Choice (Q4-Q6) -->
+            <div class="section-header mt-8">Section B: Multiple Choice (A, B, or C)</div>
+            <div id="section-mcq" class="space-y-2">
+                 <!-- Q4 -->
+                <div class="input-group">
+                    <span class="question-label">Q4.</span>
+                    <input type="text" id="q4" class="input-field mcq-input" maxlength="1" data-answer="A" />
+                    <span id="f4" class="feedback"></span>
+                </div>
+                <!-- Q5 -->
+                <div class="input-group">
+                    <span class="question-label">Q5.</span>
+                    <input type="text" id="q5" class="input-field mcq-input" maxlength="1" data-answer="B" />
+                    <span id="f5" class="feedback"></span>
+                </div>
+                <!-- Q6 -->
+                <div class="input-group">
+                    <span class="question-label">Q6.</span>
+                    <input type="text" id="q6" class="input-field mcq-input" maxlength="1" data-answer="B" />
+                    <span id="f6" class="feedback"></span>
+                </div>
+            </div>
+
+            <!-- Group 3: Short Answer / Gap Fill (Q7-Q25) -->
+            <div class="section-header mt-8">Section C: Short Answer / Gap Fill</div>
+            <div id="section-fill" class="space-y-2">
+                <!-- Q7 -->
+                <div class="input-group">
+                    <span class="question-label">Q7.</span>
+                    <input type="text" id="q7" class="input-field" data-answer="LAST MONTH" />
+                    <span id="f7" class="feedback"></span>
+                </div>
+                <!-- Q8 -->
+                <div class="input-group">
+                    <span class="question-label">Q8.</span>
+                    <input type="text" id="q8" class="input-field" data-answer="NORTH BLOCK" data-alt="NORTH" />
+                    <span id="f8" class="feedback"></span>
+                </div>
+                <!-- Q9 -->
+                <div class="input-group">
+                    <span class="question-label">Q9.</span>
+                    <input type="text" id="q9" class="input-field" data-answer="MONEYPENNY" data-alt="MISS MONEYPENNY" />
+                    <span id="f9" class="feedback"></span>
+                </div>
+                <!-- Q10 -->
+                <div class="input-group">
+                    <span class="question-label">Q10.</span>
+                    <input type="text" id="q10" class="input-field" data-answer="GETTY" />
+                    <span id="f10" class="feedback"></span>
+                </div>
+                <!-- Q11 -->
+                <div class="input-group">
+                    <span class="question-label">Q11.</span>
+                    <input type="text" id="q11" class="input-field" data-answer="THURSDAY" />
+                    <span id="f11" class="feedback"></span>
+                </div>
+                <!-- Q12 -->
+                <div class="input-group">
+                    <span class="question-label">Q12.</span>
+                    <input type="text" id="q12" class="input-field" data-answer="17" data-alt="SEVENTEEN" />
+                    <span id="f12" class="feedback"></span>
+                </div>
+                <!-- Q13 -->
+                <div class="input-group">
+                    <span class="question-label">Q13.</span>
+                    <input type="text" id="q13" class="input-field" data-answer="KENYAN" />
+                    <span id="f13" class="feedback"></span>
+                </div>
+                <!-- Q14 -->
+                <div class="input-group">
+                    <span class="question-label">Q14.</span>
+                    <input type="text" id="q14" class="input-field" data-answer="97000" data-alt="97,000" />
+                    <span id="f14" class="feedback"></span>
+                </div>
+                <!-- Q15 -->
+                <div class="input-group">
+                    <span class="question-label">Q15.</span>
+                    <input type="text" id="q15" class="input-field" data-answer="2014" />
+                    <span id="f15" class="feedback"></span>
+                </div>
+                <!-- Q16 -->
+                <div class="input-group">
+                    <span class="question-label">Q16.</span>
+                    <input type="text" id="q16" class="input-field" data-answer="BUSINESS" />
+                    <span id="f16" class="feedback"></span>
+                </div>
+                <!-- Q17 -->
+                <div class="input-group">
+                    <span class="question-label">Q17.</span>
+                    <input type="text" id="q17" class="input-field" data-answer="PROFIT" />
+                    <span id="f17" class="feedback"></span>
+                </div>
+                <!-- Q18 -->
+                <div class="input-group">
+                    <span class="question-label">Q18.</span>
+                    <input type="text" id="q18" class="input-field" data-answer="1723" />
+                    <span id="f18" class="feedback"></span>
+                </div>
+                <!-- Q19 -->
+                <div class="input-group">
+                    <span class="question-label">Q19.</span>
+                    <input type="text" id="q19" class="input-field" data-answer="CANTILLON" />
+                    <span id="f19" class="feedback"></span>
+                </div>
+                <!-- Q20 -->
+                <div class="input-group">
+                    <span class="question-label">Q20.</span>
+                    <input type="text" id="q20" class="input-field" data-answer="1734" />
+                    <span id="f20" class="feedback"></span>
+                </div>
+                <!-- Q21 -->
+                <div class="input-group">
+                    <span class="question-label">Q21.</span>
+                    <input type="text" id="q21" class="input-field" data-answer="ADAM" />
+                    <span id="f21" class="feedback"></span>
+                </div>
+                <!-- Q22 -->
+                <div class="input-group">
+                    <span class="question-label">Q22.</span>
+                    <input type="text" id="q22" class="input-field" data-answer="BOOK" />
+                    <span id="f22" class="feedback"></span>
+                </div>
+                <!-- Q23 -->
+                <div class="input-group">
+                    <span class="question-label">Q23.</span>
+                    <input type="text" id="q23" class="input-field" data-answer="EXPERIENCE" />
+                    <span id="f23" class="feedback"></span>
+                </div>
+                <!-- Q24 -->
+                <div class="input-group">
+                    <span class="question-label">Q24.</span>
+                    <input type="text" id="q24" class="input-field" data-answer="GERMANY" />
+                    <span id="f24" class="feedback"></span>
+                </div>
+                <!-- Q25 -->
+                <div class="input-group">
+                    <span class="question-label">Q25.</span>
+                    <input type="text" id="q25" class="input-field" data-answer="FEMALE" />
+                    <span id="f25" class="feedback"></span>
+                </div>
+            </div>
+
+            <button type="submit" id="submit-button" class="w-full bg-blue-600 text-white font-bold py-3 mt-10 rounded-lg text-xl hover:bg-blue-700 transition duration-300 shadow-lg">
+                Submit and Get Result
+            </button>
+        </form>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('worksheet-form');
+            const scoreDisplay = document.getElementById('score-display');
+            const totalQuestions = 25;
+
+            // Get references to all question inputs
+            const questions = [];
+            for (let i = 1; i <= totalQuestions; i++) {
+                const qId = `q${i}`;
+                questions.push(document.getElementById(qId));
+            }
+
+            // Function to normalize student input for robust checking
+            const normalize = (str) => {
+                if (!str) return '';
+                // Convert to uppercase, remove leading/trailing whitespace, and remove commas (for numbers)
+                return str.toUpperCase().trim().replace(/,/g, '');
+            };
+
+            const checkAnswers = () => {
+                let correctCount = 0;
+                
+                // Clear all previous feedback and reset styles
+                document.querySelectorAll('.feedback').forEach(f => f.innerHTML = '');
+
+                questions.forEach((input) => {
+                    const questionId = input.id;
+                    const qNumber = questionId.substring(1);
+                    const feedbackElement = document.getElementById(`f${qNumber}`);
+                    
+                    const studentAnswer = input.value;
+                    const normalizedStudent = normalize(studentAnswer);
+
+                    // Get the correct answer and alternative answer(s) from data attributes
+                    const correctAnswer = input.getAttribute('data-answer');
+                    const altAnswer = input.getAttribute('data-alt');
+                    
+                    const normalizedCorrect = normalize(correctAnswer);
+                    const normalizedAlt = altAnswer ? normalize(altAnswer) : null;
+                    
+                    let isCorrect = false;
+                    
+                    // 1. Check primary answer
+                    if (normalizedStudent === normalizedCorrect) {
+                        isCorrect = true;
+                    } 
+                    // 2. Check alternative answer if it exists
+                    else if (normalizedAlt && normalizedStudent === normalizedAlt) {
+                        isCorrect = true;
+                    }
+                    
+                    if (isCorrect) {
+                        correctCount++;
+                        feedbackElement.innerHTML = '<span class="tick">✓</span>';
+                    } else {
+                        // Determine the correct answer(s) to show in the feedback
+                        let feedbackText = correctAnswer;
+                        if (altAnswer) {
+                             // Combine the primary and alternative answers for a complete hint
+                            if (qNumber >= 1 && qNumber <= 3) {
+                                // For T/F, show T or F
+                                feedbackText = `${correctAnswer.substring(0,1)} / ${altAnswer}`;
+                            } else if (qNumber === '12') {
+                                // For Q12, show 17 / SEVENTEEN
+                                feedbackText = '17 / SEVENTEEN';
+                            } else if (qNumber === '8' || qNumber === '9') {
+                                // For short answers with alternatives like NORTH (BLOCK) or (MISS) MONEYPENNY
+                                feedbackText = `${correctAnswer} / ${altAnswer}`;
+                            } else if (qNumber === '14') {
+                                // For number with alternative format
+                                feedbackText = '97,000 / 97000';
+                            } else {
+                                feedbackText = correctAnswer; // Default to primary
+                            }
+                        } else {
+                            // If no alt answer, just use the primary answer
+                            feedbackText = correctAnswer;
+                        }
+                        
+
+                        feedbackElement.innerHTML = 
+                            `<span class="cross">✗</span> 
+                             <span class="correct-text">(${feedbackText})</span>`;
+                    }
+                });
+                
+                // Update score display
+                scoreDisplay.textContent = `${correctCount} / ${totalQuestions}`;
+            };
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                checkAnswers();
+            });
+        });
+    </script>
+</body>
+</html>
